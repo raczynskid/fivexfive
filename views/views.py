@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
 from scripts import scripts
 
@@ -17,6 +17,7 @@ def workout_a():
                            workout="A",
                            description="upper body push",
                            date=datetime.now().strftime("%Y-%m-%d"),
+                           route="workout_a",
                            lifts=lifts)
 
 
@@ -26,6 +27,8 @@ def workout_b():
     return render_template("workout_template.html",
                            workout="B",
                            description="upper body pull",
+                           date=datetime.now().strftime("%Y-%m-%d"),
+                           route="workout_b",
                            lifts=lifts)
 
 
@@ -35,15 +38,15 @@ def workout_c():
     return render_template("workout_template.html",
                            workout="C",
                            description="full body workout",
+                           date=datetime.now().strftime("%Y-%m-%d"),
+                           route="workout_c",
                            lifts=lifts)
 
 
 @app.route("/up_lift", methods=['GET', 'POST'])
 def up_lift():
     data = request.form
-    date, lift = data['date'], data['lift']
-
-    print(date, lift)
+    date, lift, url = data['date'], data['lift'], data['url']
 
     scripts.increase_series(date, lift)
-    return request.url
+    return redirect(url_for(url))

@@ -23,25 +23,25 @@
             {{ lift["lift_name"] }}
             </div>
                 <div class="col-sm-4">
-                    {%for i in range(1, lift["current_series"]+1)%}
-                        <button style="background-color:green;"
-                                type="button"
-                                class="btn btn-default"
-                                >{{i}}x5</button>
-                    {% endfor %}
-
-                    {%for i in range(lift["current_series"] + 1, lift["last_series"])%}
-                        <button style="background-color:#cef0b4;"
-                                type="button"
-                                class="btn btn-default"
-                                >{{i}}x5</button>
-                    {% endfor %}
-
-                    {%for i in range(lift["last_series"], 6)%}
-                        <button style="background-color:white;"
-                                type="button"
-                                class="btn btn-default"
-                                >{{i}}x5</button>
+                    {%for i in range(1, 6)%}
+                    {% if i <= lift["current_series"] %}
+                    <button style="background-color:green;"
+                            class="btn btn-default"
+                    >{{i}}x5
+                    </button>
+                    {% endif %}
+                    {% if (i > lift["current_series"]) and (i <= lift["last_series"]) %}
+                    <button style="background-color:#cef0b4;"
+                            class="btn btn-default"
+                    >{{i}}x5
+                    </button>
+                    {% endif %}
+                    {% if (i > lift["last_series"]) and (i <= 6) and (lift["current_series"]) < 5 %}
+                    <button style="background-color:white;"
+                            class="btn btn-default"
+                    >{{i}}x5
+                    </button>
+                    {% endif %}
                     {% endfor %}
 
                     <form action="{{ url_for('up_lift') }}"
@@ -50,6 +50,7 @@
                           style="float:right;">
                         <input type="hidden" name="lift" value='{{ lift["lift_name"] }}'>
                         <input type="hidden" name="date" value='{{ date }}'>
+                        <input type="hidden" name="url" value='{{ route }}'>
                         <button style="background-color:white;"
                                 name='lift'
                                 type="submit"

@@ -23,14 +23,12 @@ def insert_lift(date, lift, series, weight):
 
 
 def update_series(date, lift):
-    sql_query = f"""UPDATE fivexfive.Workouts
-          SET series = series + 1
-          WHERE date = '{date}' AND lift_name = '{lift}';"""
+    sql_query = f"""UPDATE fivexfive.current_lift
+          SET series = IF(series < 5, series + 1, series + 0)
+          WHERE lift_name = '{lift}';"""
     with conn.cursor() as cur:
         cur.execute(sql_query)
         conn.commit()
-    print(date, lift)
-    print("updated!")
 
 
 def get_lifts(workout_type):
@@ -46,7 +44,6 @@ def get_lifts(workout_type):
 
                     INNER JOIN fivexfive.last_lift ll ON cl.lift_name = ll.lift_name;
     """
-    print(sql_query)
     with conn.cursor() as cur:
         cur.execute(sql_query)
         conn.commit()
