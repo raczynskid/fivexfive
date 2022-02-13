@@ -7,9 +7,8 @@ conn = pymysql.connect(
     host='fivexfive.c0syxj4d0fpm.eu-central-1.rds.amazonaws.com',
     port=3306,
     user="admin",
-    password="dupsko666",
+    password=password,
     db='fivexfive',
-
 )
 
 cursor = conn.cursor()
