@@ -46,7 +46,14 @@ def workout_c():
 @app.route("/up_lift", methods=['GET', 'POST'])
 def up_lift():
     data = request.form
-    date, lift, url = data['date'], data['lift'], data['url']
+    lift, url = data['lift'], data['url']
 
-    scripts.increase_series(date, lift)
+    scripts.increase_series(lift)
     return redirect(url_for(url))
+
+
+@app.route("/finish", methods=['GET', 'POST'])
+def finish():
+    workout_type = request.form['workout_type']
+    scripts.finish(workout_type)
+    return redirect(url_for("index"))
